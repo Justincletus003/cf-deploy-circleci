@@ -25,7 +25,7 @@ jobs:
               --source=. \
               --entry-point $ENTRYPOINT \
               --trigger-http \
-              --project $GCP_PROJECT
+              --project $GCP_PROJECT \
               --allow-unauthenticated
 
 workflows:
