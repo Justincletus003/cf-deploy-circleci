@@ -20,8 +20,8 @@ jobs:
       - run:
          name: Install libzip-dev
          command: |
-          sudo apt-get install -y libzip-dev
-          sudo apt-get install zip
+          apt-get install -y libzip-dev
+          apt-get install zip
           zip --version
       
       # - run:
