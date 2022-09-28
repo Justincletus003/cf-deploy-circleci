@@ -21,7 +21,7 @@ jobs:
          name: Install libzip-dev
          command: |
           apt-get install -y libzip-dev
-          docker-php-ext-install zip          
+          apt-get install -y zip
           zip --version
       
       # - run:
