@@ -3,6 +3,13 @@ jobs:
   deploy:
     docker:
       - image: google/cloud-sdk
+    environment:
+      PROJECT_NAME: "cf-deploy"
+      GOOGLE_PROJECT_ID: "pantheon-lighthouse-poc"
+      FUNCTION_NAME: "cf-deploy"
+      ENTRYPOINT: "FnDeployCI"
+      BUCKNAME: "cf-deploy-lh"
+      
     steps:
       - checkout
       - run:
@@ -10,23 +17,20 @@ jobs:
           command: |
             echo ${GCLOUD_SERVICE_KEY} > ${HOME}/gcloud-service-key.json
             gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
-      - run:
-          name: Deploy To Google Cloud Functions
-          command: |
-            # Variables
-            FUNCTION_NAME=cf-deploy-circleci
-            ENTRYPOINT=FnDeployCI
-            GCP_PROJECT=pantheon-lighthouse-poc
-            # Deploy command
-            gcloud functions deploy $FUNCTION_NAME \
-              --gen2 \
-              --runtime=go116 \
-              --region=us-central1 \
-              --source=. \
-              --entry-point $ENTRYPOINT \
-              --trigger-http \
-              --project $GCP_PROJECT \
-              --allow-unauthenticated
+            zip --version
+      # - run:
+      #     name: Deploy To Google Cloud Functions          
+      #     command: |
+      #       # Deploy command
+      #       gcloud functions deploy ${FUNCTION_NAME} \
+      #         --gen2 \
+      #         --runtime=go116 \
+      #         --region=us-central1 \
+      #         --source=. \
+      #         --entry-point ${ENTRYPOINT} \
+      #         --trigger-http \
+      #         --project ${GOOGLE_PROJECT_ID} \
+      #         --allow-unauthenticated
 
 workflows:
   version: 2
