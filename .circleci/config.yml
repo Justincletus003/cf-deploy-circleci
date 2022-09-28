@@ -29,21 +29,19 @@ jobs:
       - run:
          name: Upload zip file to GCS
          command: |
-          gsutil cp ${PROJECT_NAME}.zip gs://${BUCKNAME}/${PROJECT_NAME}.zip
-      
-      # - run:
-      #     name: Deploy To Google Cloud Functions          
-      #     command: |
-      #       # Deploy command
-      #       gcloud functions deploy ${FUNCTION_NAME} \
-      #         --gen2 \
-      #         --runtime=go116 \
-      #         --region=us-central1 \
-      #         --source=. \
-      #         --entry-point ${ENTRYPOINT} \
-      #         --trigger-http \
-      #         --project ${GOOGLE_PROJECT_ID} \
-      #         --allow-unauthenticated
+          gsutil cp ${PROJECT_NAME}.zip gs://${BUCKNAME}/${PROJECT_NAME}.zip      
+      - run:
+          name: Deploy To Google Cloud Functions        
+          command: |
+            # Deploy command
+            gcloud functions deploy "${FUNCTION_NAME} "\
+              --runtime=go116 \
+              --region=us-central1 \
+              --source="gs://${BUCKNAME}/${PROJECT_NAME}.zip" \
+              --entry-point "${ENTRYPOINT}" \
+              --trigger-http \
+              --project "${GOOGLE_PROJECT_ID}" \
+              --allow-unauthenticated
 
 workflows:
   version: 2
